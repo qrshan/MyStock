@@ -5,7 +5,6 @@ package com.nju.qrs.util;
  */
 public class StringUtils {
     public static long parseLong(String volume) {
-        System.out.println(volume);
         String amount = volume.substring(0, volume.length() - 2);
         if (volume.endsWith("万")) {
             return (long) Float.parseFloat(amount) * 10000;

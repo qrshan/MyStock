@@ -28,11 +28,12 @@
     </bean>
 
     <bean id="stockService" class="com.nju.qrs.service.impl.StockServiceImpl">
-        <constructor-arg ref="stockBeanHandler"/>
+        <property name="stockBeanHandler" ref="stockBeanHandler"/>
+        <property name="stockRedisDao" ref="stockRedisDao"/>
+        <property name="stockDao" ref="stockDao"/>
     </bean>
 
     <bean id="stockBeanHandler" class="com.nju.qrs.beanhandler.StockBeanHandler">
-        <constructor-arg ref="stockRedisDao"/>
         <property name="stockDecoder" ref="stockDecoder"/>
     </bean>
 

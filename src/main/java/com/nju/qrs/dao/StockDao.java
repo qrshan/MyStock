@@ -13,6 +13,14 @@ public class StockDao {
     private StockMapper stockMapper;
 
     public void insert(Stock stock) {
-        stockMapper.insertSelective(stock);
+        if (stockMapper.selectByPrimaryKey(stock.getStockNum()) == null) {
+            stockMapper.insertSelective(stock);
+        } else {
+            stockMapper.updateByPrimaryKeySelective(stock);
+        }
+    }
+
+    public Stock getStockByNum(String stockNum) {
+        return stockMapper.selectByPrimaryKey(stockNum);
     }
 }

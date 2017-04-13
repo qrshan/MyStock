@@ -1,6 +1,10 @@
 package com.nju.qrs.service.impl;
 
 import com.nju.qrs.beanhandler.StockBeanHandler;
+import com.nju.qrs.dao.StockDao;
+import com.nju.qrs.dao.StockRedisDao;
+import com.nju.qrs.model.Stock;
+import com.nju.qrs.model.StockPrice;
 import com.nju.qrs.service.StockService;
 
 import java.io.*;
@@ -8,7 +12,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by qingrongshan on 17/4/11.
@@ -22,13 +28,30 @@ public class StockServiceImpl implements StockService {
     private static final String APP_KEY = "47ebc31bdeda7fbd279c1afe750537dc";
     private StockBeanHandler stockBeanHandler;
 
-    public StockServiceImpl(StockBeanHandler stockBeanHandler) {
-        this.stockBeanHandler = stockBeanHandler;
-    }
+    private StockRedisDao stockRedisDao;
+    private StockDao stockDao;
 
+    @Override
     public void requestStocks(String[] stockNums) {
         for (String stockNum : stockNums) {
             requestStock(stockNum);
+        }
+    }
+
+    @Override
+    public void searchStock(String stockNum) {
+        Stock stock = stockDao.getStockByNum(stockNum);
+        if (stock != null) {
+
+        }
+    }
+
+    @Override
+    public void showAllStocks() {
+        Set<String> stocks = stockRedisDao.allStockList();
+        Map<String, String> stockPrices = (Map<String, String>) stockRedisDao.allStockPrice();
+        for (String stock : stocks) {
+            System.out.println(stock + "-->" + stockPrices.get(stock));
         }
     }
 
@@ -42,7 +65,10 @@ public class StockServiceImpl implements StockService {
 
         try {
             result = request(url, params, "GET");
-            stockBeanHandler.parseJsonResult(result, stockNum);
+            Stock stock = stockBeanHandler.parseJsonStockResult(result, stockNum);
+            List<StockPrice> stockPriceList = stockBeanHandler.parseJsonStockPriceListResult(result, stockNum);
+            stockRedisDao.setStockData(stock);
+            stockDao.insert(stock);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -117,5 +143,17 @@ public class StockServiceImpl implements StockService {
             }
         }
         return sb.toString();
+    }
+
+    public void setStockBeanHandler(StockBeanHandler stockBeanHandler) {
+        this.stockBeanHandler = stockBeanHandler;
+    }
+
+    public void setStockRedisDao(StockRedisDao stockRedisDao) {
+        this.stockRedisDao = stockRedisDao;
+    }
+
+    public void setStockDao(StockDao stockDao) {
+        this.stockDao = stockDao;
     }
 }

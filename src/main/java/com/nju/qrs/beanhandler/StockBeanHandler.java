@@ -14,30 +14,24 @@ import java.util.List;
  */
 public class StockBeanHandler {
 
-    private StockRedisDao stockRedisDao;
-    @Autowired
-    private StockDao stockDao;
-
     private StockDecoder stockDecoder;
 
-    public StockBeanHandler(StockRedisDao stockRedisDao) {
-        this.stockRedisDao = stockRedisDao;
-    }
-
-    public void parseJsonResult(String result, String stockNum) {
+    public Stock parseJsonStockResult(String result, String stockNum) {
         Stock stock = null;
         try {
             stock = stockDecoder.parseStock(result, stockNum);
-            stockRedisDao.setStockData(stock);
-            stockDao.insert(stock);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return stock;
+    }
+
+    public List<StockPrice> parseJsonStockPriceListResult(String result, String stockNum) {
         List<StockPrice> stockPriceList = stockDecoder.parseStockPrices(result);
         for (StockPrice stockPrice : stockPriceList) {
             stockPrice.setStockNum(stockNum);
-            //stockRedisDao.setStockPrice(stockPrice);
         }
+        return stockPriceList;
     }
 
     public void setStockDecoder(StockDecoder stockDecoder) {
