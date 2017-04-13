@@ -26,23 +26,23 @@ public class StockServiceImpl implements StockService {
         this.stockBeanHandler = stockBeanHandler;
     }
 
-    public void requestStocks(String[] stockNames) {
-        for (String stockName : stockNames) {
-            requestStock(stockName);
+    public void requestStocks(String[] stockNums) {
+        for (String stockNum : stockNums) {
+            requestStock(stockNum);
         }
     }
 
-    private void requestStock(String stockName) {
+    private void requestStock(String stockNum) {
         String result = null;
         String url = "http://op.juhe.cn/onebox/stock/query";//请求接口地址
         Map params = new HashMap();//请求参数
         params.put("key", APP_KEY);//应用APPKEY(应用详细页查询)
         params.put("dtype", "");//返回数据的格式,xml或json，默认json
-        params.put("stock", stockName);//股票名称
+        params.put("stock", stockNum);//股票名称
 
         try {
             result = request(url, params, "GET");
-            stockBeanHandler.parseJsonResult(result);
+            stockBeanHandler.parseJsonResult(result, stockNum);
         } catch (Exception e) {
             e.printStackTrace();
         }

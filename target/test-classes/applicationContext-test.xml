@@ -6,6 +6,11 @@
     <context:component-scan base-package="com.nju.qrs"></context:component-scan>
     <context:property-placeholder location="classpath:redis.properties" />
 
+    <!-- 该 BeanPostProcessor 将自动对标注 @Autowired 的 Bean 进行注入 -->
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+    <import resource="applicationContext-transaction-test.xml"/>
+
     <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxIdle" value="${redis.maxIdle}"/>
         <property name="maxTotal" value="${redis.maxTotal}"/>
@@ -27,12 +32,14 @@
     </bean>
 
     <bean id="stockBeanHandler" class="com.nju.qrs.beanhandler.StockBeanHandler">
-        <constructor-arg ref="stockDao"/>
+        <constructor-arg ref="stockRedisDao"/>
         <property name="stockDecoder" ref="stockDecoder"/>
     </bean>
 
-    <bean id="stockDao" class="com.nju.qrs.dao.StockDao">
+    <bean id="stockRedisDao" class="com.nju.qrs.dao.StockRedisDao">
         <constructor-arg ref="redisTemplate"/>
     </bean>
+
+    <bean id="stockDao" class="com.nju.qrs.dao.StockDao"></bean>
 
 </beans>

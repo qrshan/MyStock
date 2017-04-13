@@ -4,6 +4,7 @@ package com.nju.qrs.model;
  * Created by qingrongshan on 17/4/11.
  */
 public class StockPrice {
+    private String stockNum;
     private String date;
     private float price;
     private String rise;
@@ -58,5 +59,13 @@ public class StockPrice {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getStockNum() {
+        return stockNum;
+    }
+
+    public void setStockNum(String stockNum) {
+        this.stockNum = stockNum;
     }
 }
