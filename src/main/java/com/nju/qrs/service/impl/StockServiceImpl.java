@@ -6,6 +6,7 @@ import com.nju.qrs.dao.StockRedisDao;
 import com.nju.qrs.model.Stock;
 import com.nju.qrs.model.StockPrice;
 import com.nju.qrs.service.StockService;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -19,6 +20,7 @@ import java.util.Set;
 /**
  * Created by qingrongshan on 17/4/11.
  */
+@Service("stockService")
 public class StockServiceImpl implements StockService {
     public static final String DEF_CHATSET = "UTF-8";
     public static final int DEF_CONN_TIMEOUT = 30000;
@@ -47,12 +49,22 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public void showAllStocks() {
+    public String[] showAllStocksInCache() {
         Set<String> stocks = stockRedisDao.allStockList();
+        String[] stockList = new String[stocks.size()];
+        stocks.toArray(stockList);
+        return stockList;
+    }
+
+    @Override
+    public Map<String, String> allStockPricesInCache() {
         Map<String, String> stockPrices = (Map<String, String>) stockRedisDao.allStockPrice();
-        for (String stock : stocks) {
-            System.out.println(stock + "-->" + stockPrices.get(stock));
-        }
+        return stockPrices;
+    }
+
+    @Override
+    public void showAllStocks() {
+
     }
 
     private void requestStock(String stockNum) {

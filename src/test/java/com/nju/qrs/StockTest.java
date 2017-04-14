@@ -14,6 +14,6 @@ public class StockTest {
         ApplicationContext xmlApplicationContext = new ClassPathXmlApplicationContext("classpath:/applicationContext-test.xml");
         StockService stockService = (StockService) xmlApplicationContext.getBean("stockService");
         stockService.requestStocks(stocks);
-        stockService.showAllStocks();
+        stockService.showAllStocksInCache();
     }
 }

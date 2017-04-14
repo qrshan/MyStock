@@ -4,6 +4,8 @@ import com.nju.qrs.mapper.StockMapper;
 import com.nju.qrs.model.Stock;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  * Created by qingrongshan on 17/4/12.
  */

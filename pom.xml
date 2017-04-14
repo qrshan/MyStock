@@ -163,7 +163,8 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
-                    <include>mapper/*.xml</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
                 </includes>
             </resource>
         </resources>
