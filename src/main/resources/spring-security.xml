@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
+
+
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <security:user-service>
+                <security:user name="qrs" password="123" authorities="ROLE_USER"/>
+                <security:user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN"/>
+            </security:user-service>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <security:http use-expressions="true">
+        <security:access-denied-handler error-page="/loginPage?error"/>
+        <security:intercept-url pattern="/homePage" access="hasRole('ROLE_USER')"/>
+        <security:csrf disabled="true"/>
+        <security:form-login login-page="/loginPage"
+                             login-processing-url="/user/login.do"
+                             authentication-failure-url="/loginPage?error"
+                             default-target-url="/homePage"
+                             username-parameter="username"
+                             password-parameter="password"/>
+        <security:logout logout-success-url="/loginPage?logout"/>
+    </security:http>
+</beans>

@@ -1,6 +1,9 @@
 #generated files
 target/
 
+#mac temp file
+**/.DS_Store
+
 #intellij file
 *.iml
 .idea/

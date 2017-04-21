@@ -16,7 +16,6 @@ import java.util.Map;
  * Created by qingrongshan on 17/4/14.
  */
 @Controller
-@RequestMapping("/")
 public class StockController {
 
     @Autowired

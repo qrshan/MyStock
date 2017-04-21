@@ -19,12 +19,12 @@
         <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
     </bean>
 
-    <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
         <property name="poolConfig" ref="poolConfig" />
     </bean>
 
     <bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
-        <property name="connectionFactory"   ref="connectionFactory" />
+        <property name="connectionFactory"   ref="jedisConnectionFactory" />
     </bean>
 
     <bean id="stockService" class="com.nju.qrs.service.impl.StockServiceImpl">
@@ -42,4 +42,10 @@
     </bean>
 
     <bean id="stockDao" class="com.nju.qrs.dao.StockDao"></bean>
+
+    <!-- 将session放入redis -->
+    <bean id="redisHttpSessionConfiguration"
+          class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
+        <property name="maxInactiveIntervalInSeconds" value="1800" />
+    </bean>
 </beans>
