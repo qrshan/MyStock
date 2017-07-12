@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nju.qrs.mapper.RoleMapper">
+
+    <resultMap type="com.nju.qrs.model.Role" id="selectRoleMap">
+        <id column="ROLE_ID" property="id"/>
+        <result column="ROLE_TYPE" property="roleType"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="selectRoleMap">
+        SELECT ID as ROLE_ID,ROLE_TYPE FROM ROLE
+    </select>
+
+    <insert id="batchInsertRole" parameterType="java.util.List">
+        INSERT INTO USER_ROLE_REL(USER_ID,ROLE_ID) VALUES
+        <foreach collection="list" item="role" index="index" separator=",">
+            (#{role.userId}, #{role.id})
+        </foreach>
+    </insert>
+
+    <select id="getEntityByKey" resultMap="selectRoleMap" parameterType="int">
+        SELECT ID as ROLE_ID,ROLE_TYPE FROM ROLE WHERE ID = #{key}
+    </select>
+
+</mapper>

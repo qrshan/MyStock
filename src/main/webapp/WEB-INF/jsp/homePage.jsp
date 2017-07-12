@@ -5,23 +5,38 @@
   Time: 下午3:40
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<h3>Welcome to MyStock Tutorials</h3>
-<ul>
-    <li>Java 8 tutorial</li>
-    <li>Spring tutorial</li>
-    <li>Gradle tutorial</li>
-    <li>BigData tutorial</li>
-</ul>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>欢迎页面</title>
+</head>
+<body>
+欢迎 : <strong>${user}</strong>, 这是欢迎页面。<br/>
 
-<c:url value="/logout" var="logoutUrl"/>
-<form id="logout" action="${logoutUrl}" method="post">
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-</form>
-<c:if test="${pageContext.request.userPrincipal.name != null}">
-    <a href="javascript:document.getElementById('logout').submit()">Logout</a>
-</c:if>
+<security:authorize access="hasRole('ADMIN')">
+    <strong>具有admin权限的人可以看到的内容。</strong><br/>
+    <a href="<c:url value="/admin/index" />">跳往admin index</a><br/>
+</security:authorize>
 
+<security:authorize access="hasRole('DBA')">
+    <strong>具有DBA权限的人可以看到的内容。</strong><br/>
+</security:authorize>
+
+<security:authorize access="hasRole('ADMIN') and hasRole('DBA')">
+    <strong>同时具有admin和DBA权限的人可以看到的内容。</strong><br/>
+</security:authorize>
+
+<security:authorize access="hasRole('USER')">
+    <strong>具有USER权限的人可以看到的内容。</strong><br/>
+</security:authorize>
+<a href="<c:url value="/logout" />">Logout</a><br/>
+<security:authorize access="isRememberMe()">
+    <label><a href="#">View existing Users</a></label>
+</security:authorize>
+</body>
 </html>

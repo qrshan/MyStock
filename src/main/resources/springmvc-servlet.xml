@@ -8,9 +8,10 @@
     <mvc:annotation-driven />
     <!-- 扫描controller（controller层注入） -->
     <context:component-scan base-package="com.nju.qrs.controller" />
-
+    <context:component-scan base-package="com.nju.qrs">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+    </context:component-scan>
     <!--<bean class="com.nju.qrs.security.LoginSecurityConfig"/> -->
-    <import resource="spring-security.xml"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/" />

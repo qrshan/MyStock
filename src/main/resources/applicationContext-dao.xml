@@ -37,4 +37,11 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSession"/>
     </bean>
 
+    <!-- If request parameter "targetUrl" is existed, then forward to this url -->
+    <!-- For update login form -->
+    <bean id="savedRequestAwareAuthenticationSuccessHandler"
+          class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+        <property name="targetUrlParameter" value="targetUrl" />
+    </bean>
+
 </beans>

@@ -7,6 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<h3>Welcome to JournalDEV Tutorials</h3>
-<a href="${pageContext.request.contextPath}/loginPage">Login to Journal</a>
+<h3>Welcome to MyStock</h3>
+<a href="${pageContext.request.contextPath}/login">Login to MyStock</a>
 </html>
